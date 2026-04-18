@@ -1,12 +1,8 @@
 package ru.pe.lostinomsk;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,13 +14,18 @@ public class FirstScreen implements Screen {
     private Texture backgroundTexture;
     SpriteBatch spriteBatch;
     FitViewport viewport;
+    Music backgroundMusic;
 
     @Override
     public void show() {
         // Prepare your screen here.
-        backgroundTexture = new Texture("room.png");
+        backgroundTexture = new Texture(GameAssets.BACKGROUND_TEXTURE);
         spriteBatch = new SpriteBatch();
         viewport = new FitViewport(8, 5);
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(GameAssets.BACKGROUND_MUSIC));
+        // Запуск один раз здесь: в render() нельзя вызывать play() каждый кадр, а isPlaying() ложен в pause.
+        backgroundMusic.setLooping(true);
+        backgroundMusic.play();
     }
 
     @Override
@@ -32,7 +33,7 @@ public class FirstScreen implements Screen {
         // Draw your screen here. "delta" is the time since last render in seconds.
         // organize code into three methods
         // input();
-        // logic();
+        logic();
         draw();
     }
 
@@ -63,7 +64,23 @@ public class FirstScreen implements Screen {
 
     @Override
     public void dispose() {
-        // Destroy screen's assets here.
+        // Освобождаем нативные и видеопамять: текстуры, OpenAL Music, SpriteBatch.
+        if (backgroundMusic != null) {
+            backgroundMusic.dispose();
+            backgroundMusic = null;
+        }
+        if (backgroundTexture != null) {
+            backgroundTexture.dispose();
+            backgroundTexture = null;
+        }
+        if (spriteBatch != null) {
+            spriteBatch.dispose();
+            spriteBatch = null;
+        }
+    }
+
+    private void logic() {
+        // Игровая логика (ввод, столкновения и т.д.).
     }
 
     private void draw() {
@@ -77,7 +94,7 @@ public class FirstScreen implements Screen {
         float worldHeight = viewport.getWorldHeight();
 
         spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight); // draw the background
-
+        
         spriteBatch.end();
     }
 }
