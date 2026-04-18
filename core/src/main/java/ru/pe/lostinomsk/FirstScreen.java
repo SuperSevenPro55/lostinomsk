@@ -21,7 +21,6 @@ public class FirstScreen implements Screen {
 
     @Override
     public void show() {
-        // Prepare your screen here.
         backgroundTexture = new Texture("room.png");
         spriteBatch = new SpriteBatch();
         viewport = new FitViewport(8, 5);
