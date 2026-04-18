@@ -1,17 +1,21 @@
 package object.modules;
 
 public class Radio {
-    Signal signal=new Signal();
+    private Signal signal=new Signal();
     private int frequencyRadio;
     private int longitudeRadio;
+    private Computer computer;
+    Radio(Computer computerAdd){
+        computer=computerAdd;
+    }
     public void turnOn(){
         signal.newSignal();
-        frequencyRadio=(int) (Math.random() * 101);
-        longitudeRadio=(int) (Math.random() * 101);
+        frequencyRadio=(int) (Math.random() * 83);
+        longitudeRadio=(int) (Math.random() * 83);
     }
     public void checkTrue(){
         if(signal.checkSignal(frequencyRadio,longitudeRadio)){
-
+            computer.getSignal();
         }
     }
     public void turnOff(){
@@ -21,10 +25,9 @@ public class Radio {
         if(signal.getFrequencySignal()==frequencyRadio){
 
         }
-
     }
     public void checkLongitude(){
-        if(signal.getFrequencySignal()==longitudeRadio){
+        if(signal.getLongitudeSignal()==longitudeRadio){
 
         }
     }
