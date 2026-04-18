@@ -6,25 +6,66 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-/** First screen of the application. Displayed after the application is created. */
+// Главная сцена
 public class FirstScreen implements Screen {
-    private Texture backgroundTexture;
-    SpriteBatch spriteBatch;
-    FitViewport viewport;
-    Music backgroundMusic;
+    private SpriteBatch spriteBatch;
+    private FitViewport viewport;
+    private Music backgroundMusic;
+
+    private Texture bgTower;
+    private Texture bgTowerBlink;
+    private Texture bgWall;
+    private Texture bgTables;
+    private Texture bgDevices;
+    private Texture switcherUpper;
+    private Texture switcherLower;
+
+    private ShapeRenderer shapeRenderer;
+    private Rectangle radioBounds;
+    private Rectangle compBound;
+
+    private Vector3 touchPoint;
+
+    private final float WORLD_WIDTH = 240;
+    private final float WORLD_HEIGHT = 135;
 
     @Override
     public void show() {
-        // Prepare your screen here.
-        backgroundTexture = new Texture(GameAssets.BACKGROUND_TEXTURE);
         spriteBatch = new SpriteBatch();
-        viewport = new FitViewport(8, 5);
+        viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT);
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(GameAssets.BACKGROUND_MUSIC));
-        // Запуск один раз здесь: в render() нельзя вызывать play() каждый кадр, а isPlaying() ложен в pause.
+
+        touchPoint = new Vector3();
+
+        // Текстуры
+        bgTower = new Texture("mainScene/tower1.png");
+        bgTowerBlink = new Texture("mainScene/tower2.png");
+        bgWall = new Texture("mainScene/wall.png");
+        bgTables = new Texture("mainScene/tables.png");
+        bgDevices = new Texture("mainScene/devices.png");
+        switcherUpper = new Texture("mainScene/switchUpper.png");
+        switcherLower = new Texture("mainScene/switchLower.png");
+
+        bgTower.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        bgTowerBlink.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        bgWall.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        bgTables.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        bgDevices.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        switcherUpper.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        switcherLower.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+        radioBounds = new Rectangle();
+        shapeRenderer = new ShapeRenderer();
+
+        // Музыка
         backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.05f);
         backgroundMusic.play();
     }
 
@@ -69,13 +110,13 @@ public class FirstScreen implements Screen {
             backgroundMusic.dispose();
             backgroundMusic = null;
         }
-        if (backgroundTexture != null) {
-            backgroundTexture.dispose();
-            backgroundTexture = null;
-        }
         if (spriteBatch != null) {
             spriteBatch.dispose();
             spriteBatch = null;
+        }
+        if (shapeRenderer != null) {
+            shapeRenderer.dispose();
+            shapeRenderer = null;
         }
     }
 
@@ -93,8 +134,18 @@ public class FirstScreen implements Screen {
         float worldWidth = viewport.getWorldWidth();
         float worldHeight = viewport.getWorldHeight();
 
-        spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight); // draw the background
-        
+        spriteBatch.draw(bgTower, 0, 0, worldWidth, worldHeight); // draw the background
+        spriteBatch.draw(bgWall, 0, 0, worldWidth, worldHeight);
+        spriteBatch.draw(bgTables, 0, 0, worldWidth, worldHeight);
+        spriteBatch.draw(bgDevices, 0, 0, worldWidth, worldHeight);
         spriteBatch.end();
+
+        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(radioBounds.x, radioBounds.y, radioBounds.width, radioBounds.height);
+
+        shapeRenderer.end();
     }
 }
