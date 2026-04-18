@@ -14,7 +14,7 @@ import ru.pe.lostinomsk.Main;
 
 public class MainMenuScreen implements Screen {
     private final Main game;
-    private BitmapFont font;
+    private final BitmapFont font;
     private SpriteBatch batch;
     private Texture background;
 
@@ -34,7 +34,8 @@ public class MainMenuScreen implements Screen {
         font.getData().setScale(3f);
 
         background = new Texture("main_menu_background.png");
-        playButtonBounds = new Rectangle(Gdx.graphics.getWidth() / 2f - 100, Gdx.graphics.getHeight() / 2f - 50, 200, 100);
+        // Ставим прямоугольник пониже, например, на высоте 150 пикселей от низа
+        playButtonBounds = new Rectangle(Gdx.graphics.getWidth() / 2f - 100, 150, 200, 100);
         touchPoint = new Vector3();
     }
 
@@ -50,18 +51,21 @@ public class MainMenuScreen implements Screen {
         font.setColor(Color.WHITE);
         font.draw(batch,
             "Lost in Omsk",
-            Gdx.graphics.getWidth() / 2f - 250,
+            Gdx.graphics.getWidth() / 2f - 225,
             Gdx.graphics.getHeight() / 2f + 80);
 
         // Кнопка "Играть"
         font.setColor(Color.WHITE);
-        font.draw(batch, "ИГРАТЬ", playButtonBounds.x - 10, playButtonBounds.y - 300);
+        font.draw(batch, "ИГРАТЬ", playButtonBounds.x + 10, playButtonBounds.y + 60);
 
         batch.end();
 
         if (Gdx.input.justTouched()) {
             touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            if (playButtonBounds.contains(touchPoint.x, Gdx.graphics.getHeight())) {
+
+            float realTouchY = Gdx.graphics.getHeight() - touchPoint.y;
+
+            if (playButtonBounds.contains(touchPoint.x, realTouchY)) {
                 game.setScreen(new FirstScreen());
             }
         }
