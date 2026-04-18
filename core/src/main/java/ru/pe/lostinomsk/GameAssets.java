@@ -10,8 +10,7 @@ public final class GameAssets {
     private GameAssets() {
     }
 
-    /** Фоновое изображение комнаты (PNG). */
-    public static final String BACKGROUND_TEXTURE = "room.png";
+    public static final String BACKGROUND_TEXTURE = "room.jpg";
 
     /**
      * Фоновая музыка в формате OGG Vorbis — рекомендуемый для LibGDX формат.
@@ -21,4 +20,13 @@ public final class GameAssets {
      * Конвертация: {@code ffmpeg -i source.mp3 -c:a libvorbis background.ogg}
      */
     public static final String BACKGROUND_MUSIC = "background.ogg";
+
+    public static final String GODZILLA_TEXTURE = "Godzilla/godzilla.png";
+    public static final String GODZILLA_MUSIC = "Godzilla/godzilla.ogg";
+
+    public static final String LIGHTNING_TEXTURE = "Lightning/lightning.png";
+    public static final String LIGHTNING_MUSIC = "Lightning/lightning.ogg";
+
+    public static final String FIELD_TEXTURE = "Field/field.png";
+    public static final String FIELD_MUSIC = "Field/field.ogg";
 }

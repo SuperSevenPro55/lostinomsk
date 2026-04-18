@@ -1,6 +1,9 @@
 package ru.pe.lostinomsk;
 
 import com.badlogic.gdx.Screen;
+
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
@@ -9,21 +12,35 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-/** First screen of the application. Displayed after the application is created. */
+/**
+ * First screen of the application. Displayed after the application is created.
+ */
 public class FirstScreen implements Screen {
-    private Texture backgroundTexture;
-    SpriteBatch spriteBatch;
-    FitViewport viewport;
-    Music backgroundMusic;
+    private static int max = 1000, min = 0;
+    private boolean flag = false;
+    private Event event;
+    private Random random = new Random();
+
+    private Texture backgroundTexture,
+            eventTexture;
+    private SpriteBatch spriteBatch;
+    private FitViewport viewport;
+    private Music backgroundMusic,
+            eventMusic;
 
     @Override
     public void show() {
         // Prepare your screen here.
-        backgroundTexture = new Texture(GameAssets.BACKGROUND_TEXTURE);
+        // Явно internal: путь должен совпадать с файлами в assets/ (в т.ч. подпапки
+        backgroundTexture = new Texture(Gdx.files.internal(GameAssets.BACKGROUND_TEXTURE));
         spriteBatch = new SpriteBatch();
-        viewport = new FitViewport(8, 5);
+        viewport = new FitViewport(80, 50);
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(GameAssets.BACKGROUND_MUSIC));
-        // Запуск один раз здесь: в render() нельзя вызывать play() каждый кадр, а isPlaying() ложен в pause.
+
+        eventTexture = new Texture(Gdx.files.internal(GameAssets.GODZILLA_TEXTURE));
+        eventMusic = Gdx.audio.newMusic(Gdx.files.internal(GameAssets.GODZILLA_MUSIC));
+        // Запуск один раз здесь: в render() нельзя вызывать play() каждый кадр, а
+        // isPlaying() ложен в pause.
         backgroundMusic.setLooping(true);
         backgroundMusic.play();
     }
@@ -39,9 +56,12 @@ public class FirstScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        // If the window is minimized on a desktop (LWJGL3) platform, width and height are 0, which causes problems.
-        // In that case, we don't resize anything, and wait for the window to be a normal size before updating.
-        if(width <= 0 || height <= 0) return;
+        // If the window is minimized on a desktop (LWJGL3) platform, width and height
+        // are 0, which causes problems.
+        // In that case, we don't resize anything, and wait for the window to be a
+        // normal size before updating.
+        if (width <= 0 || height <= 0)
+            return;
         viewport.update(width, height, true); // true centers the camera
 
         // Resize your screen here. The parameters represent the new window size.
@@ -77,6 +97,10 @@ public class FirstScreen implements Screen {
             spriteBatch.dispose();
             spriteBatch = null;
         }
+        if (eventTexture != null) {
+            eventTexture.dispose();
+            eventTexture = null;
+        }
     }
 
     private void logic() {
@@ -94,7 +118,50 @@ public class FirstScreen implements Screen {
         float worldHeight = viewport.getWorldHeight();
 
         spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight); // draw the background
-        
+        if (event()) {
+            spriteBatch.draw(eventTexture, event.getX(), event.getY(), event.getH(), event.getW());
+            eventMusic.setLooping(false);
+            eventMusic.setOnCompletionListener(music -> {
+                flag = false;
+            });
+            eventMusic.play();
+        }
         spriteBatch.end();
+    }
+
+    private boolean event() {
+        if (flag == true)
+            return true;
+        if (min < max) {
+            min++;
+            return false;
+        } else {
+            min = 0;
+            max = (int) (((10000 - 1000) + 1) * Math.random() + 1000);
+            flag = true;
+            choice();
+            return true;
+        }
+    }
+
+    private void choice() {
+        int x = random.nextInt(3) + 1;
+        switch (x) {
+            case 1:
+                eventTexture = new Texture(Gdx.files.internal(GameAssets.GODZILLA_TEXTURE));
+                eventMusic = Gdx.audio.newMusic(Gdx.files.internal(GameAssets.GODZILLA_MUSIC));
+                event = new Event(12,29, 12, 12);
+                break;
+            case 2: 
+                eventTexture = new Texture(Gdx.files.internal(GameAssets.LIGHTNING_TEXTURE));
+                eventMusic = Gdx.audio.newMusic(Gdx.files.internal(GameAssets.LIGHTNING_MUSIC));
+                event = new Event(23,28, 22, 22);
+                break;
+            case 3: 
+                eventTexture = new Texture(Gdx.files.internal(GameAssets.FIELD_TEXTURE));
+                eventMusic = Gdx.audio.newMusic(Gdx.files.internal(GameAssets.FIELD_MUSIC));
+                event = new Event(5,21, 27, 44);
+                break;
+        }
     }
 }
