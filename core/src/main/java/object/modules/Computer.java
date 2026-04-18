@@ -5,20 +5,22 @@ public class Computer {
     private int stage=1;
     private String message;
 
-
     void getSignal(){
         signal=true;
     }
+
     void turnOn(){
         if(signal){
             checkStatusSignal();
         }
     }
+
     void turnOff(){
         if(signal){
             checkStatusSignal();
         }
     }
+
     void checkStatusSignal(){
         switch (stage){
             case 1:
@@ -32,4 +34,20 @@ public class Computer {
         }
     }
 
+    boolean getMessage(String x) {
+        getSignal();
+        turnOn();
+        if (check(x)) {
+            stage++;
+            return true;
+        }
+        return false;
+    }
+
+    boolean check (String x) {
+        if ((x.toUpperCase()).equals(message.toUpperCase())) {
+            return true;
+        }
+        return false;
+    }
 }
