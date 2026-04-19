@@ -51,7 +51,7 @@ public class ReactionMiniGame implements MiniGame {
         float zoneW = 28;
 
         font.getData().setScale(0.15f);
-        font.draw(batch, "Click in green zone: " + successCount + "/3",
+        font.draw(batch, "Попадите в зеленую зону: " + successCount + "/3",
             bounds.x + 8, bounds.y + bounds.height - 8);
         font.getData().setScale(0.5f);
 
