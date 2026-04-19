@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import ru.pe.lostinomsk.screens.FinalScreen;
 import ru.pe.lostinomsk.screens.MainMenuScreen;
 import ru.pe.lostinomsk.utils.GameAssets;
 

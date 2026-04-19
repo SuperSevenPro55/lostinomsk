@@ -12,7 +12,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import ru.pe.lostinomsk.objects.game.MiniGame;
 
 public class ComputerMonitorActor extends Actor {
     private MiniGame currentMiniGame;
@@ -123,13 +122,15 @@ public class ComputerMonitorActor extends Actor {
             currentMiniGame.render((SpriteBatch) batch, pixel, font, gameBounds);
         } else if (messageToShow != null) {
             // ЕСЛИ ЕСТЬ СООБЩЕНИЕ - РИСУЕМ ЕГО ПО ЦЕНТРУ МОНИТОРА
-            font.getData().setScale(0.4f);
+            font.getData().setScale(0.2f);
             // Координаты X и Y здесь заданы примерно для центра монитора 89x55
+            font.draw(batch, "Сигнал расшифрован:\n", getX() + 5, getY() + getHeight() / 2f + 15);
+            font.getData().setScale(0.12f);
             font.draw(batch, messageToShow, getX() + 5, getY() + getHeight() / 2f + 5);
 
-            font.getData().setScale(0.3f);
-            font.draw(batch, "Press SPACE", getX() + 5, getY() + 10);
-            font.getData().setScale(1f);
+            font.getData().setScale(0.2f);
+            font.draw(batch, "Нажмите SPACE", getX() + 5, getY() + 10);
+            font.getData().setScale(0.15f);
         }
     }
 }

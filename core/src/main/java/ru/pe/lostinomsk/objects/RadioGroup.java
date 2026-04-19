@@ -161,8 +161,6 @@ public class RadioGroup extends Group {
         isCaught = false; // Снимаем блокировку
 
         targetSignal.newSignal();
-        System.out.println("НОВАЯ ЦЕЛЬ: Частота=" + targetSignal.getFrequencySignal() +
-            " Долгота=" + targetSignal.getLongitudeSignal());
 
         updateVisuals();
     }

@@ -42,11 +42,11 @@ public class CodeDecryptMiniGame implements MiniGame {
     @Override
     public void render(SpriteBatch batch, Texture pixel, BitmapFont font, Rectangle bounds) {
         // Заголовок
-        font.getData().setScale(0.5f);
+        font.getData().setScale(0.15f);
         font.draw(batch, "Расшифруйте слово:", bounds.x + 6, bounds.y + bounds.height - 6);
 
         // Зашифрованное слово
-        font.getData().setScale(0.45f);
+        font.getData().setScale(0.2f);
         font.draw(batch, encryptedWord, bounds.x + 6, bounds.y + bounds.height - 16);
 
         // Поле ввода
@@ -63,18 +63,18 @@ public class CodeDecryptMiniGame implements MiniGame {
 
         batch.setColor(Color.WHITE);
 
-        font.getData().setScale(0.45f);
+        font.getData().setScale(0.15f);
 
         String shownText = input.length() == 0 ? "_" : input.toString();
         font.draw(batch, shownText, fieldX + 3, fieldY + 9);
 
         if (wrongAnswer && !finished) {
-            font.getData().setScale(0.4f);
+            font.getData().setScale(0.1f);
             font.draw(batch, "Неверный ответ", bounds.x + 6, bounds.y + 28);
         }
 
         if (finished) {
-            font.getData().setScale(0.45f);
+            font.getData().setScale(0.1f);
             font.draw(batch, "Правильно!", bounds.x + 6, bounds.y + 28);
         }
 

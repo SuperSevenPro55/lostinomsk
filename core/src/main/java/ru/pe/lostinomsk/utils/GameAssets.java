@@ -5,16 +5,23 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Disposable;
 
 public class GameAssets implements Disposable {
     public final AssetManager manager = new AssetManager();
+
+    public static final AssetDescriptor<BitmapFont> MAIN_FONT =
+        new AssetDescriptor<>("fonts/KONSTRIKT.otf", BitmapFont.class);
 
     public static final AssetDescriptor<Texture> MAIN_MENU_BACKGROUND =
         new AssetDescriptor<>("main_menu_background.png", Texture.class);
 
     public static final AssetDescriptor<Texture> BACKGROUND_TOWER =
         new AssetDescriptor<>("mainScene/tower1.png", Texture.class);
+
+    public static final AssetDescriptor<Texture> BACKGROUND_TOWER_ON =
+        new AssetDescriptor<>("mainScene/tower2.png", Texture.class);
 
     public static final AssetDescriptor<Texture> BACKGROUND_WALL =
         new AssetDescriptor<>("mainScene/wall.png", Texture.class);
@@ -59,6 +66,7 @@ public class GameAssets implements Disposable {
         manager.load("mainScene/tower1.png", Texture.class, pixelAllParams);
         manager.load("mainScene/tumb.png", Texture.class, pixelAllParams);
         manager.load("mainScene/wall.png", Texture.class, pixelAllParams);
+        manager.load("mainScene/tower2.png", Texture.class, pixelAllParams);
 
         manager.load(MAIN_MENU_BACKGROUND);
         manager.load(BACKGROUND_MUSIC);
