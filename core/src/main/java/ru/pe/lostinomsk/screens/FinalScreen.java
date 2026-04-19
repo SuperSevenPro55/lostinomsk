@@ -48,6 +48,8 @@ public class FinalScreen implements Screen {
 
         stage.addActor(titleText);
         stage.addActor(hintText);
+
+        game.font.getData().setScale(1f);
     }
 
     @Override

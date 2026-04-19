@@ -11,6 +11,9 @@ import com.badlogic.gdx.utils.Disposable;
 public class GameAssets implements Disposable {
     public final AssetManager manager = new AssetManager();
 
+    public static final AssetDescriptor<Texture> DEVICES2 =
+        new AssetDescriptor<>("mainScene/devices2.png", Texture.class);
+
     public static final AssetDescriptor<BitmapFont> MAIN_FONT =
         new AssetDescriptor<>("fonts/KONSTRIKT.otf", BitmapFont.class);
 
@@ -69,6 +72,7 @@ public class GameAssets implements Disposable {
         manager.load("mainScene/tower2.png", Texture.class, pixelAllParams);
         manager.load("events/Godzilla/godzilla.png", Texture.class, pixelAllParams);
         
+        manager.load(DEVICES2);
         manager.load(MAIN_MENU_BACKGROUND);
         manager.load(BACKGROUND_MUSIC);
     }

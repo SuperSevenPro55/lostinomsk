@@ -72,6 +72,10 @@ public class GameScreen implements Screen {
         Image godzilla = new Image(bgGodzilla);
         godzilla.setBounds(125, 52, 15, 15);
         godzilla.addAction(Actions.hide());
+        Image devices = new Image(bgDevices);
+
+        Texture bgDevices2 = game.assets.manager.get("mainScene/devices2.png", Texture.class);
+        Image devices2 = new Image(bgDevices2);
 
         tower2.addAction(Actions.forever(
                 Actions.sequence(
@@ -88,7 +92,7 @@ public class GameScreen implements Screen {
         Image bg = new Image(bgTower);
         Image wall = new Image(bgWall);
         Image tables = new Image(bgTables);
-        Image devices = new Image(bgDevices);
+
 
         ComputerMonitorActor monitor = new ComputerMonitorActor(pixel, font);
         monitor.setBounds(15, 14, 89, 55);
@@ -145,6 +149,7 @@ public class GameScreen implements Screen {
         stage.addActor(wall);
         stage.addActor(tables);
         stage.addActor(devices);
+        //stage.addActor(devices2);
         stage.addActor(radio);
         stage.addActor(monitor);
         stage.addActor(godzilla);
