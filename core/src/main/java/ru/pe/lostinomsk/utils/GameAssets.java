@@ -67,7 +67,8 @@ public class GameAssets implements Disposable {
         manager.load("mainScene/tumb.png", Texture.class, pixelAllParams);
         manager.load("mainScene/wall.png", Texture.class, pixelAllParams);
         manager.load("mainScene/tower2.png", Texture.class, pixelAllParams);
-
+        manager.load("events/Godzilla/godzilla.png", Texture.class, pixelAllParams);
+        
         manager.load(MAIN_MENU_BACKGROUND);
         manager.load(BACKGROUND_MUSIC);
     }

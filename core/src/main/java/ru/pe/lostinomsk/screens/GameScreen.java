@@ -1,5 +1,7 @@
 package ru.pe.lostinomsk.screens;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -8,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -17,8 +20,14 @@ import com.badlogic.gdx.audio.Music;
 import ru.pe.lostinomsk.Main;
 import ru.pe.lostinomsk.objects.RadioGroup;
 import ru.pe.lostinomsk.objects.game.*;
+import ru.pe.lostinomsk.utils.Event;
 
 public class GameScreen implements Screen {
+    private static int max = 1000, min = 0;
+    private Random random = new Random();
+    private Texture eventTexture;
+    private Music eventMusic;
+
     private final Main game;
     private Stage stage;
     private Music music;
@@ -37,7 +46,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        music=Gdx.audio.newMusic(Gdx.files.internal("music/main.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("music/main.mp3"));
         music.setLooping(true);
         music.setVolume(0.5f);
         music.play();
@@ -59,24 +68,27 @@ public class GameScreen implements Screen {
         Texture bgTower2 = game.assets.manager.get("mainScene/tower2.png", Texture.class);
         Image tower2 = new Image(bgTower2);
 
+        Texture bgGodzilla = game.assets.manager.get("events/Godzilla/godzilla.png", Texture.class);
+        Image godzilla = new Image(bgGodzilla);
+        godzilla.setBounds(125, 52, 15, 15);
+        godzilla.addAction(Actions.hide());
+
         tower2.addAction(Actions.forever(
-            Actions.sequence(
-                Actions.hide(),      // Прячем вторую башню
-                Actions.delay(1f),   // Ждем 3 секунды (горит обычная башня)
-                Actions.show(),      // Вспышка! Показываем вторую башню
-                Actions.delay(0.1f), // Горит долю секунды
-                Actions.hide(),      // Снова прячем
-                Actions.delay(0.1f), // Темнота
-                Actions.show(),      // Вторая короткая вспышка
-                Actions.delay(0.2f)  // Горит чуть дольше и цикл начинается заново
-            )
-        ));
+                Actions.sequence(
+                        Actions.hide(), // Прячем вторую башню
+                        Actions.delay(1f), // Ждем 3 секунды (горит обычная башня)
+                        Actions.show(), // Вспышка! Показываем вторую башню
+                        Actions.delay(0.1f), // Горит долю секунды
+                        Actions.hide(), // Снова прячем
+                        Actions.delay(0.1f), // Темнота
+                        Actions.show(), // Вторая короткая вспышка
+                        Actions.delay(0.2f) // Горит чуть дольше и цикл начинается заново
+                )));
 
         Image bg = new Image(bgTower);
         Image wall = new Image(bgWall);
         Image tables = new Image(bgTables);
         Image devices = new Image(bgDevices);
-
 
         ComputerMonitorActor monitor = new ComputerMonitorActor(pixel, font);
         monitor.setBounds(15, 14, 89, 55);
@@ -94,16 +106,14 @@ public class GameScreen implements Screen {
                             radio.resetRadio();
                         });
                     });
-                }
-                else if (currentStoryStage == 2) {
+                } else if (currentStoryStage == 2) {
                     monitor.setMiniGame(new CatchDotMiniGame(), () -> {
                         monitor.showMessage("Рома гений дизайна", () -> {
                             currentStoryStage = 3;
                             radio.resetRadio();
                         });
                     });
-                }
-                else if (currentStoryStage == 3) {
+                } else if (currentStoryStage == 3) {
 
                     monitor.setMiniGame(new ReactionMiniGame(), () -> {
                         monitor.showMessage("ТЕБЕ НЕ ПОКИНУТЬ ОМСК", () -> {
@@ -117,6 +127,19 @@ public class GameScreen implements Screen {
 
         radio.setPosition(142, 14);
 
+        int rand = random.nextInt(25) + 1;
+        if (rand == 12) {
+            eventMusic = Gdx.audio.newMusic(Gdx.files.internal("events/Godzilla/godzilla.ogg"));
+            godzilla.addAction(Actions.show());
+            eventMusic.setLooping(false);
+            eventMusic.setOnCompletionListener(music -> {
+                godzilla.addAction(Actions.hide());
+            });
+            eventMusic.play();
+            music.stop();
+            game.setScreen(new FinalScreen(game));
+        }
+
         stage.addActor(bg);
         stage.addActor(tower2);
         stage.addActor(wall);
@@ -124,17 +147,15 @@ public class GameScreen implements Screen {
         stage.addActor(devices);
         stage.addActor(radio);
         stage.addActor(monitor);
-
+        stage.addActor(godzilla);
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
 
-
         stage.act(delta);
         stage.draw();
-
 
     }
 
