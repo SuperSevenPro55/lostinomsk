@@ -131,10 +131,8 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
 
-
         stage.act(delta);
         stage.draw();
-
 
     }
 
