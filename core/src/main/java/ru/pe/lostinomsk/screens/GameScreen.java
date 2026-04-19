@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -59,6 +60,11 @@ public class GameScreen implements Screen {
         Texture bgTower2 = game.assets.manager.get("mainScene/tower2.png", Texture.class);
         Image tower2 = new Image(bgTower2);
 
+        Image devices = new Image(bgDevices);
+
+        Texture bgDevices2 = game.assets.manager.get("mainScene/devices2.png", Texture.class);
+        Image devices2 = new Image(bgDevices2);
+
         tower2.addAction(Actions.forever(
             Actions.sequence(
                 Actions.hide(),      // Прячем вторую башню
@@ -75,7 +81,7 @@ public class GameScreen implements Screen {
         Image bg = new Image(bgTower);
         Image wall = new Image(bgWall);
         Image tables = new Image(bgTables);
-        Image devices = new Image(bgDevices);
+
 
 
         ComputerMonitorActor monitor = new ComputerMonitorActor(pixel, font);
@@ -88,7 +94,7 @@ public class GameScreen implements Screen {
             @Override
             public void run() {
                 if (currentStoryStage == 1) {
-                    monitor.setMiniGame(new ReactionMiniGame(), () -> {
+                    monitor.setMiniGame(new CodeDecryptMiniGame(), () -> {
                         monitor.showMessage("Вайбкодинг топ!", () -> {
                             currentStoryStage = 2;
                             radio.resetRadio();
@@ -122,6 +128,7 @@ public class GameScreen implements Screen {
         stage.addActor(wall);
         stage.addActor(tables);
         stage.addActor(devices);
+        //stage.addActor(devices2);
         stage.addActor(radio);
         stage.addActor(monitor);
 
