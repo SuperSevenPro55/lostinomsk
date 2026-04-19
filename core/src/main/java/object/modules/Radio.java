@@ -1,5 +1,7 @@
 package object.modules;
 
+import ru.pe.lostinomsk.utils.Signal;
+
 public class Radio {
     Signal signal=new Signal();
     private int frequencyRadio;

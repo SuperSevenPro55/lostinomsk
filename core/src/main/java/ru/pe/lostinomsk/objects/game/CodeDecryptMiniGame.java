@@ -43,7 +43,7 @@ public class CodeDecryptMiniGame implements MiniGame {
     public void render(SpriteBatch batch, Texture pixel, BitmapFont font, Rectangle bounds) {
         // Заголовок
         font.getData().setScale(0.5f);
-        font.draw(batch, "Decode the word:", bounds.x + 6, bounds.y + bounds.height - 6);
+        font.draw(batch, "Расшифруйте слово:", bounds.x + 6, bounds.y + bounds.height - 6);
 
         // Зашифрованное слово
         font.getData().setScale(0.45f);
@@ -70,12 +70,12 @@ public class CodeDecryptMiniGame implements MiniGame {
 
         if (wrongAnswer && !finished) {
             font.getData().setScale(0.4f);
-            font.draw(batch, "Wrong answer", bounds.x + 6, bounds.y + 28);
+            font.draw(batch, "Неверный ответ", bounds.x + 6, bounds.y + 28);
         }
 
         if (finished) {
             font.getData().setScale(0.45f);
-            font.draw(batch, "Correct!", bounds.x + 6, bounds.y + 28);
+            font.draw(batch, "Правильно!", bounds.x + 6, bounds.y + 28);
         }
 
         font.getData().setScale(1f);

@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import ru.pe.lostinomsk.screens.MainMenu;
+import ru.pe.lostinomsk.screens.MainMenuScreen;
 import ru.pe.lostinomsk.utils.GameAssets;
 
 public class Main extends Game {
@@ -24,7 +24,7 @@ public class Main extends Game {
         assets.loadAll();
         assets.manager.finishLoading();
 
-        setScreen(new MainMenu(this));
+        setScreen(new MainMenuScreen(this));
     }
 
     @Override

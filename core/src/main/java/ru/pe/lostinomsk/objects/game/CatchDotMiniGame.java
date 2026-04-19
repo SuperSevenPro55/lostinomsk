@@ -17,6 +17,10 @@ public class CatchDotMiniGame implements MiniGame {
     private int score;
     private boolean finished;
 
+    public CatchDotMiniGame() {
+
+    }
+
     @Override
     public void start(Rectangle bounds) {
         dotX = MathUtils.random(bounds.x + 6, bounds.x + bounds.width - size - 6);

@@ -15,12 +15,12 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import ru.pe.lostinomsk.Main;
 import ru.pe.lostinomsk.utils.GameAssets;
 
-public class MainMenu implements Screen {
+public class MainMenuScreen implements Screen {
     private final Main game;
     private Texture background;
     private Stage stage;
 
-    public MainMenu(Main game) {
+    public MainMenuScreen(Main game) {
         this.game = game;
 
         }
