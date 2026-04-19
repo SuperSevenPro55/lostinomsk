@@ -50,10 +50,10 @@ public class ReactionMiniGame implements MiniGame {
         float barH = 8;
         float zoneW = 28;
 
-        font.getData().setScale(0.5f);
+        font.getData().setScale(0.15f);
         font.draw(batch, "Click in green zone: " + successCount + "/3",
             bounds.x + 8, bounds.y + bounds.height - 8);
-        font.getData().setScale(1f);
+        font.getData().setScale(0.5f);
 
         batch.setColor(Color.DARK_GRAY);
         batch.draw(pixel, barX, barY, barW, barH);

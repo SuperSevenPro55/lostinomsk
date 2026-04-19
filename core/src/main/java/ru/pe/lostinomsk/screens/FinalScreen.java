@@ -33,7 +33,7 @@ public class FinalScreen implements Screen {
         titleText.setFillParent(true); // Автоматически центрирует по всему экрану
 
         // В зависимости от размера твоего шрифта в Main, масштаб возможно придется покрутить
-        titleText.setFontScale(0.6f);
+        titleText.setFontScale(0.7f);
 
         // Подсказка снизу
         Label hintText = new Label("Нажмите ENTER для выхода", hintStyle);
