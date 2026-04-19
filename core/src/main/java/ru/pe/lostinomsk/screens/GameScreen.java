@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -20,12 +19,10 @@ import com.badlogic.gdx.audio.Music;
 import ru.pe.lostinomsk.Main;
 import ru.pe.lostinomsk.objects.RadioGroup;
 import ru.pe.lostinomsk.objects.game.*;
-import ru.pe.lostinomsk.utils.Event;
 
 public class GameScreen implements Screen {
-    private static int max = 1000, min = 0;
+    private Image godzilla;
     private Random random = new Random();
-    private Texture eventTexture;
     private Music eventMusic;
 
     private final Main game;
@@ -69,7 +66,7 @@ public class GameScreen implements Screen {
         Image tower2 = new Image(bgTower2);
 
         Texture bgGodzilla = game.assets.manager.get("events/Godzilla/godzilla.png", Texture.class);
-        Image godzilla = new Image(bgGodzilla);
+        godzilla = new Image(bgGodzilla);
         godzilla.setBounds(125, 52, 15, 15);
         godzilla.addAction(Actions.hide());
         Image devices = new Image(bgDevices);
@@ -131,19 +128,6 @@ public class GameScreen implements Screen {
 
         radio.setPosition(142, 14);
 
-        int rand = random.nextInt(25) + 1;
-        if (rand == 12) {
-            eventMusic = Gdx.audio.newMusic(Gdx.files.internal("events/Godzilla/godzilla.ogg"));
-            godzilla.addAction(Actions.show());
-            eventMusic.setLooping(false);
-            eventMusic.setOnCompletionListener(music -> {
-                godzilla.addAction(Actions.hide());
-            });
-            eventMusic.play();
-            music.stop();
-            game.setScreen(new FinalScreen(game));
-        }
-
         stage.addActor(bg);
         stage.addActor(tower2);
         stage.addActor(wall);
@@ -159,9 +143,22 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
 
+        int rand = random.nextInt(1000) + 1;
+        if (rand == 42) {
+            eventMusic = Gdx.audio.newMusic(Gdx.files.internal("events/Godzilla/godzilla.ogg"));
+            godzilla.addAction(Actions.show());
+            eventMusic.setLooping(false);
+            eventMusic.setOnCompletionListener(music -> {
+                godzilla.addAction(Actions.hide()); 
+                game.setScreen(new FinalScreen(game));
+            });
+            eventMusic.play();
+            music.stop();
+           
+        }
+
         stage.act(delta);
         stage.draw();
-
     }
 
     @Override
