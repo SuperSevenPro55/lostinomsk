@@ -3,6 +3,7 @@ package ru.pe.lostinomsk.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -14,7 +15,7 @@ import ru.pe.lostinomsk.Main;
 public class FinalScreen implements Screen {
     private final Main game;
     private Stage stage;
-
+    private Music musicEnd;
     public FinalScreen(Main game) {
         this.game = game;
     }
@@ -22,7 +23,10 @@ public class FinalScreen implements Screen {
     @Override
     public void show() {
         stage = new Stage(new FitViewport(240, 135), game.batch);
-
+        musicEnd=Gdx.audio.newMusic(Gdx.files.internal("sound/end.mp3"));
+        musicEnd.setLooping(false);
+        musicEnd.setVolume(0.5f);
+        musicEnd.play();
         // Создаем стиль текста. Сделаем его красным для жути!
         Label.LabelStyle mainStyle = new Label.LabelStyle(game.font, Color.RED);
         Label.LabelStyle hintStyle = new Label.LabelStyle(game.font, Color.DARK_GRAY);

@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.audio.Music;
 import ru.pe.lostinomsk.Main;
 import ru.pe.lostinomsk.objects.RadioGroup;
 import ru.pe.lostinomsk.objects.game.*;
@@ -19,7 +20,7 @@ import ru.pe.lostinomsk.objects.game.*;
 public class GameScreen implements Screen {
     private final Main game;
     private Stage stage;
-
+    private Music music;
     private Rectangle monitorBounds;
     private final Vector2 touch = new Vector2();
 
@@ -35,6 +36,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        music=Gdx.audio.newMusic(Gdx.files.internal("music/main.mp3"));
+        music.setLooping(true);
+        music.setVolume(0.5f);
+        music.play();
         stage = new Stage(new FitViewport(240, 135), game.batch);
         Gdx.input.setInputProcessor(stage);
 
@@ -82,8 +87,10 @@ public class GameScreen implements Screen {
                     });
                 }
                 else if (currentStoryStage == 3) {
+
                     monitor.setMiniGame(new ReactionMiniGame(), () -> {
                         monitor.showMessage("ТЕБЕ НЕ ПОКИНУТЬ ОМСК", () -> {
+                            music.stop();
                             game.setScreen(new FinalScreen(game));
                         });
                     });

@@ -1,6 +1,8 @@
 package ru.pe.lostinomsk.objects.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -23,12 +25,18 @@ public class ComputerMonitorActor extends Actor {
 
     private String messageToShow = null;
     private Runnable onMessageDismissed = null;
-
+    private Music click;
+    private Music keybord;
     public ComputerMonitorActor(Texture pixel, BitmapFont font) {
         this.pixel = pixel;
         this.font = font;
         this.gameBounds = new Rectangle();
-
+        click=Gdx.audio.newMusic(Gdx.files.internal("sound/mouse.mp3"));
+        click.setLooping(false);
+        click.setVolume(0.5f);
+        keybord=Gdx.audio.newMusic(Gdx.files.internal("sound/keybord.mp3"));
+        keybord.setLooping(false);
+        keybord.setVolume(0.5f);
         // Перехватываем клики и клавиши прямо в Scene2D
         this.addListener(new InputListener() {
             @Override
@@ -37,7 +45,7 @@ public class ComputerMonitorActor extends Actor {
                 if (event.getStage() != null) {
                     event.getStage().setKeyboardFocus(ComputerMonitorActor.this);
                 }
-
+                click.play();
                 if (currentMiniGame != null && !currentMiniGame.isFinished()) {
                     // Передаем локальные координаты клика другу
                     currentMiniGame.touchDown(x + getX(), y + getY(), gameBounds);
@@ -47,6 +55,7 @@ public class ComputerMonitorActor extends Actor {
 
             @Override
             public boolean keyTyped(InputEvent event, char character) {
+                keybord.play();
                 if (currentMiniGame instanceof ru.pe.lostinomsk.objects.game.CodeDecryptMiniGame codeGame) {
                     return codeGame.keyTyped(character);
                 }

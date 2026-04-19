@@ -1,5 +1,7 @@
 package ru.pe.lostinomsk.objects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -29,10 +31,17 @@ public class RadioGroup extends Group {
     private Image redLight2;
     private Image greenLight1;
     private Image greenLight2;
+    private Music scrl;
+    private Music rightAnswer;
 
     public RadioGroup(Main game) {
         this.onSignalCaught = onSignalCaught;
-
+        scrl= Gdx.audio.newMusic(Gdx.files.internal("sound/turn-on.mp3"));
+        scrl.setLooping(false);
+        scrl.setVolume(0.5f);
+        rightAnswer= Gdx.audio.newMusic(Gdx.files.internal("sound/right-answer.mp3"));
+        rightAnswer.setLooping(false);
+        rightAnswer.setVolume(0.5f);
         targetSignal = new Signal();
         targetSignal.newSignal();
 
@@ -80,6 +89,7 @@ public class RadioGroup extends Group {
         tumb1.addListener(new InputListener() {
             @Override
             public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY) {
+                scrl.play();
                 currentFreq -= (int) Math.signum(amountY);
                 currentFreq = MathUtils.clamp(currentFreq, 0, 82); // Используем MathUtils из GDX
                 updateVisuals();
@@ -103,6 +113,7 @@ public class RadioGroup extends Group {
         tumb2.addListener(new InputListener() {
             @Override
             public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY) {
+                scrl.play();
                 currentLong -= (int) Math.signum(amountY);
                 currentLong = MathUtils.clamp(currentLong, 0, 82); // Ограничиваем от 0 до 82
                 updateVisuals();
@@ -140,6 +151,7 @@ public class RadioGroup extends Group {
         if (targetSignal.checkSignal(currentFreq, currentLong)) {
             isCaught = true;
             if (onSignalCaught != null) {
+                rightAnswer.play();
                 onSignalCaught.run();
             }
         }
