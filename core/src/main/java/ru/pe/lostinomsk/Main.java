@@ -3,38 +3,48 @@ package ru.pe.lostinomsk;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import ru.pe.lostinomsk.screens.FinalScreen;
 import ru.pe.lostinomsk.screens.MainMenuScreen;
+import ru.pe.lostinomsk.utils.GameAssets;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends Game {
-    private final String PATH_TO_FONT = "fonts/KONSTRUKT.otf";
-    private BitmapFont font;
+    private static final String PATH_TO_FONT = "fonts/KONSTRUKT.otf";
+
+    public SpriteBatch batch;
+    public BitmapFont font;
+    public GameAssets assets;
 
     @Override
     public void create() {
-        font = setFont(PATH_TO_FONT);
+        batch = new SpriteBatch();
+        font = generateFont(PATH_TO_FONT);
+        assets = new GameAssets();
 
-        setScreen(new MainMenuScreen(this, font));
+        assets.loadAll();
+        assets.manager.finishLoading();
 
+        setScreen(new MainMenuScreen(this));
     }
 
     @Override
     public void dispose() {
-        font.dispose();
+        super.dispose();
+        if (batch != null) batch.dispose();
+        if (font != null) font.dispose();
+        if (assets != null) assets.dispose();
     }
 
-    private BitmapFont setFont(String pathToFont) {
-        // Шрифт
-        BitmapFont font;
+    private BitmapFont generateFont(String pathToFont) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(pathToFont));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
         parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
 
-        font = generator.generateFont(parameter);
+        BitmapFont generatedFont = generator.generateFont(parameter);
         generator.dispose();
 
-        return font;
+        return generatedFont;
     }
 }

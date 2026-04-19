@@ -4,76 +4,77 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
-import ru.pe.lostinomsk.FirstScreen;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import ru.pe.lostinomsk.Main;
+import ru.pe.lostinomsk.utils.GameAssets;
 
 public class MainMenuScreen implements Screen {
     private final Main game;
-    private final BitmapFont font;
-    private SpriteBatch batch;
     private Texture background;
+    private Stage stage;
 
-    private Rectangle playButtonBounds;
-    private Vector3 touchPoint;
-
-
-    public MainMenuScreen(Main game, BitmapFont font) {
+    public MainMenuScreen(Main game) {
         this.game = game;
-        this.font = font;
-    }
+
+        }
 
     @Override
     public void show() {
-        batch = new SpriteBatch();
+        stage = new Stage(new FitViewport(1920, 1080), game.batch);
+        background = game.assets.manager.get(GameAssets.MAIN_MENU_BACKGROUND);
 
-        font.getData().setScale(3f);
+        Gdx.input.setInputProcessor(stage);
 
-        background = new Texture("main_menu_background.png");
-        // Ставим прямоугольник пониже, например, на высоте 150 пикселей от низа
-        playButtonBounds = new Rectangle(Gdx.graphics.getWidth() / 2f - 100, 150, 200, 100);
-        touchPoint = new Vector3();
+        Label.LabelStyle titleStyle = new Label.LabelStyle(game.font, Color.WHITE);
+        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.font = game.font;
+        buttonStyle.fontColor = Color.WHITE;
+        buttonStyle.overFontColor = Color.LIGHT_GRAY;
+
+        Label titleLabel = new Label("Lost in Omsk", titleStyle);
+        titleLabel.setFontScale(3f);
+
+        TextButton playButton = new TextButton("ИГРАТЬ", buttonStyle);
+        playButton.setScale(2f);
+
+        playButton.addListener(new ClickListener() {
+           @Override
+           public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new GameScreen(game));
+           }
+        });
+
+        Table table = new Table();
+        table.setFillParent(true);
+
+        table.add(titleLabel).padBottom(50).row();
+        table.add(playButton).padBottom(-100);
+
+        stage.addActor(table);
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
 
-        // Фон
-        batch.begin();
-        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        game.batch.begin();
+        game.batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        game.batch.end();
 
-        // Название
-        font.setColor(Color.WHITE);
-        font.draw(batch,
-            "Lost in Omsk",
-            Gdx.graphics.getWidth() / 2f - 225,
-            Gdx.graphics.getHeight() / 2f + 80);
-
-        // Кнопка "Играть"
-        font.setColor(Color.WHITE);
-        font.draw(batch, "ИГРАТЬ", playButtonBounds.x + 10, playButtonBounds.y + 60);
-
-        batch.end();
-
-        if (Gdx.input.justTouched()) {
-            touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-
-            float realTouchY = Gdx.graphics.getHeight() - touchPoint.y;
-
-            if (playButtonBounds.contains(touchPoint.x, realTouchY)) {
-                game.setScreen(new FirstScreen());
-            }
-        }
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -88,13 +89,12 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void hide() {
-        dispose();
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
         background.dispose();
-        font.dispose();
+        stage.dispose();
     }
 }
