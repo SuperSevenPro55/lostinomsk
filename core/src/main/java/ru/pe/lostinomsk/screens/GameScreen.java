@@ -88,7 +88,7 @@ public class GameScreen implements Screen {
             @Override
             public void run() {
                 if (currentStoryStage == 1) {
-                    monitor.setMiniGame(new CodeDecryptMiniGame(), () -> {
+                    monitor.setMiniGame(new ReactionMiniGame(), () -> {
                         monitor.showMessage("Вайбкодинг топ!", () -> {
                             currentStoryStage = 2;
                             radio.resetRadio();

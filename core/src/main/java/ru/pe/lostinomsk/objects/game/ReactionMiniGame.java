@@ -48,7 +48,7 @@ public class ReactionMiniGame implements MiniGame {
         float barY = bounds.y + bounds.height / 2f - 4;
         float barW = bounds.width - 24;
         float barH = 8;
-        float zoneW = 28;
+        float zoneW = 10;
 
         font.getData().setScale(0.15f);
         font.draw(batch, "Click in green zone: " + successCount + "/3",
@@ -91,7 +91,7 @@ public class ReactionMiniGame implements MiniGame {
     private float randomZoneX(Rectangle bounds) {
         float barX = bounds.x + 12;
         float barW = bounds.width - 24;
-        float zoneW = 28;
+        float zoneW = 5;
         return MathUtils.random(barX, barX + barW - zoneW);
     }
 
