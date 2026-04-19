@@ -48,7 +48,7 @@ public class CatchDotMiniGame implements MiniGame {
     @Override
     public void render(SpriteBatch batch, Texture pixel, BitmapFont font, Rectangle bounds) {
         font.getData().setScale(0.15f);
-        font.draw(batch, "Catch red dot: " + score + "/5", bounds.x + 8, bounds.y + bounds.height - 8);
+        font.draw(batch, "Лови точку: " + score + "/5", bounds.x + 8, bounds.y + bounds.height - 8);
         font.getData().setScale(1f);
 
         batch.setColor(Color.RED);
